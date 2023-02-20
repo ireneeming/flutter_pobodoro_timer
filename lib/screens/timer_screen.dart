@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 enum TimerStatus { running, paused, stopped, resting }
 
@@ -64,6 +65,17 @@ class _TimerScreenState extends State<TimerScreen> {
     });
   }
 
+  void showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 5,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+
   void runTimer() async {
     Timer.periodic(Duration(seconds: 1), (Timer t) {
       switch (_timerStatus) {
@@ -76,7 +88,7 @@ class _TimerScreenState extends State<TimerScreen> {
 
         case TimerStatus.running:
           if (_timer <= 0) {
-            print('작업 완료!');
+            showToast('작업 완료!');
             rest();
           } else {
             setState(() {
